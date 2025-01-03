@@ -4,12 +4,13 @@ plugins {
 }
 
 android {
-    namespace = "com.example.androidlab"
+    namespace = "com.example.ch8_event_test"
     compileSdk = 35
+
     viewBinding.isEnabled = true
 
     defaultConfig {
-        applicationId = "com.example.androidlab"
+        applicationId = "com.example.ch8_event_test"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -28,11 +29,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
 }
 
