@@ -1,4 +1,4 @@
-package com.example.ch9_resource
+package com.example.ch11_jetpack
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
@@ -17,5 +17,4 @@ class MainActivity : AppCompatActivity() {
             insets
         }
     }
-
 }

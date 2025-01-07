@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.ch9_resource"
+    namespace = "com.example.ch11_jetpack"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.ch9_resource"
+        applicationId = "com.example.ch11_jetpack"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -33,6 +33,7 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+
     viewBinding.isEnabled = true
 }
 

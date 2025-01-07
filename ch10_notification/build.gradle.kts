@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.ch9_resource"
+    namespace = "com.example.ch10_notification"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.ch9_resource"
+        applicationId = "com.example.ch10_notification"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -33,6 +33,7 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+
     viewBinding.isEnabled = true
 }
 
