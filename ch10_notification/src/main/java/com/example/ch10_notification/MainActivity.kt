@@ -1,8 +1,11 @@
 package com.example.ch10_notification
 
+import android.app.Dialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.content.DialogInterface
+import android.content.DialogInterface.OnClickListener
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
@@ -11,8 +14,10 @@ import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.NotificationCompat
@@ -31,17 +36,27 @@ class MainActivity : AppCompatActivity() {
         val permissionLauncher = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
         ) {
-            if(it.all {permission -> permission.value == true}) {
+            if (it.all { permission -> permission.value == true }) {
                 noti()
             } else {
                 Toast.makeText(this, "permission denied...", Toast.LENGTH_SHORT).show()
             }
         }
 
+        val requestPermissionLauncher = registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted ->
+            if (isGranted) {
+                Log.d("kkang", "callback, granted...")
+            } else {
+                Log.d("kkang", "denied...")
+            }
+        }
+
 
 
         binding.notificationButton.setOnClickListener {
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 if (ContextCompat.checkSelfPermission(
                         this,
                         "android.permission.POST_NOTIFICATION"
@@ -62,14 +77,26 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    val eventHandler = object : DialogInterface.OnClickListener{
+        override fun onClick(p0: DialogInterface?, p1: Int) {
+            if(p1 == DialogInterface.BUTTON_POSITIVE) {
+                Log.d("kkang", "positive button click")
+            } else if (p1 == DialogInterface.BUTTON_NEGATIVE) {
+                Log.d("kkang", "negative button click")
+            }
+        }
+    }
+
+
+
+
     fun noti() {
         val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-
         val builder: NotificationCompat.Builder
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channelId = "one-channel"
             val channelName = "My channel one"
-            val channel = NotificationChannel (
+            val channel = NotificationChannel(
                 channelId,
                 channelName,
                 NotificationManager.IMPORTANCE_DEFAULT
@@ -77,7 +104,7 @@ class MainActivity : AppCompatActivity() {
             ).apply {
                 description = "My channel One Description"
                 setShowBadge(true)
-                val uri : Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+                val uri: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
                 val audioAttributes = AudioAttributes.Builder()
                     .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                     .setUsage(AudioAttributes.USAGE_ALARM)
@@ -100,9 +127,9 @@ class MainActivity : AppCompatActivity() {
             setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.big))
         }
 
-        val KEY_TEXT_REPLY = "key_text_reply"
-        val replyLabel = "답장"
-        val remoteInput: RemoteInput = RemoteInput.Builder(KEY_TEXT_REPLY).run {
+        val KEY_TEXT_REPLY = "key_text_Reply"
+        var replyLabel : String = "답장"
+        var remoteInput : RemoteInput = RemoteInput.Builder(KEY_TEXT_REPLY).run {
             setLabel(replyLabel)
             build()
         }
@@ -122,4 +149,5 @@ class MainActivity : AppCompatActivity() {
 
         manager.notify(11, builder.build())
     }
+
 }
